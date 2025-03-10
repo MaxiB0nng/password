@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row mt-5">
+    <div class="col-md-3">
+        <div class="list-group">
+            <a href="#" class="list-group-item list-group-item-action active">Dashboard</a>
+            <a href="{{ url_for('logout') }}" class="list-group-item list-group-item-action">Logout</a>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <h2>Your Passwords</h2>
+        <!-- Add Credentials Form -->
+        <form method="POST" action="{{ url_for('add_credentials') }}" class="mb-4">
+            <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <input type="text" class="form-control" id="description" name="description" required>
+            </div>
+            <div class="mb-3">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" class="form-control" id="username" name="username" required>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="password" name="password" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Credentials</button>
+        </form>
+
+        <!-- Passwords Table -->
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Description</th>
+                    <th>Username</th>
+                    <th>Password</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for entry in entries %}
+                <tr>
+                    <td>{{ entry.website }}</td>
+                    <td>{{ entry.username }}</td>
+                    <td>
+                        <span id="password-{{ entry.id }}" class="password-hidden">••••••••</span>
+                        <span id="password-real-{{ entry.id }}" class="password-real" style="display: none;">{{ entry.password }}</span>
+                        <button onclick="togglePassword({{ entry.id }})" class="btn btn-sm btn-outline-secondary">Show</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- JavaScript to Toggle Password Visibility -->
+<script>
+    function togglePassword(id) {
+        const hiddenPassword = document.getElementById(`password-${id}`);
+        const realPassword = document.getElementById(`password-real-${id}`);
+        const button = document.querySelector(`button[onclick="togglePassword(${id})"]`);
+
+        if (hiddenPassword.style.display === 'none') {
+            hiddenPassword.style.display = 'inline';
+            realPassword.style.display = 'none';
+            button.textContent = 'Show';
+        } else {
+            hiddenPassword.style.display = 'none';
+            realPassword.style.display = 'inline';
+            button.textContent = 'Hide';
+        }
+    }
+</script>
+{% endblock %}

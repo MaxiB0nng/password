@@ -1,0 +1,12 @@
+.password-hidden {
+    font-family: monospace;
+    letter-spacing: 2px;
+}
+
+.password-real {
+    font-family: monospace;
+}
+
+.btn-outline-secondary {
+    margin-left: 10px;
+}
